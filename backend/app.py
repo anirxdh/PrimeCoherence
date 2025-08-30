@@ -33,8 +33,8 @@ os.makedirs(ARTIFACTS_DIR, exist_ok=True)
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = MAX_FILE_SIZE
 
-# Enable CORS for Streamlit frontend
-CORS(app, origins=['http://localhost:8501'])
+# Enable CORS for Streamlit frontend and production
+CORS(app, origins=['http://localhost:8501', 'https://*.onrender.com'])
 
 # Initialize database
 init_db(DB_PATH)
@@ -61,6 +61,24 @@ def get_db_connection():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     return conn
+
+
+@app.route('/', methods=['GET'])
+def root():
+    """Root endpoint with API information."""
+    return jsonify({
+        'message': 'Prime Coherence API',
+        'version': '1.0.0',
+        'endpoints': {
+            'health': '/health',
+            'upload': '/upload',
+            'convert': '/convert',
+            'results': '/results',
+            'clear_database': '/clear-database',
+            'database_stats': '/database-stats'
+        },
+        'status': 'running'
+    })
 
 
 @app.route('/health', methods=['GET'])

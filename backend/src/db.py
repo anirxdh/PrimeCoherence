@@ -20,7 +20,7 @@ def init_db(db_path: str) -> None:
             artifact_png TEXT,
             artifact_pdf TEXT,
             notes TEXT,
-            raw_input_hash TEXT UNIQUE NOT NULL,
+            raw_input_hash TEXT NOT NULL,
             neutral_ir TEXT
         )
     ''')

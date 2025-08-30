@@ -115,19 +115,11 @@ def upload_circuit():
         except Exception as e:
             return json_error(f'Failed to parse circuit: {str(e)}')
         
-        # Compute input hash for deduplication
+        # Compute input hash (for reference only, duplicates allowed)
         input_hash = compute_input_hash(file_bytes)
         
-        # Check for duplicate
+        # Allow duplicates - no deduplication check
         conn = get_db_connection()
-        existing_run = get_run_by_hash(conn, input_hash)
-        if existing_run:
-            conn.close()
-            return jsonify({
-                'message': 'Circuit already analyzed',
-                'run_id': existing_run['id'],
-                'duplicate': True
-            })
         
         # Compute metrics
         metrics, alerts = compute_all(neutral_ir, backend_profile)

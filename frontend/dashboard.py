@@ -5,6 +5,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import io
 import base64
+import time
 from datetime import datetime
 
 # Page configuration
@@ -109,8 +110,28 @@ def main():
         
         # Clear Database
         st.write("**Clear Database:**")
-        if st.button("🗑️ Clear Database", type="secondary"):
-            # Show confirmation dialog
+        
+        # Use session state to track confirmation
+        if 'show_clear_confirmation' not in st.session_state:
+            st.session_state.show_clear_confirmation = False
+        
+        # Quick clear button (for testing)
+        if st.button("🗑️ Quick Clear (No Confirmation)", type="secondary"):
+            with st.spinner("Clearing database..."):
+                result = make_api_request("/clear-database", method="POST")
+                if result:
+                    st.success("✅ Database cleared successfully!")
+                    st.write(f"Deleted {result.get('deleted_records', 0)} records and {result.get('deleted_files', 0)} files")
+                    time.sleep(1)
+                    st.rerun()
+                else:
+                    st.error("❌ Failed to clear database")
+        
+        # Confirmation-based clear button
+        if st.button("🗑️ Clear Database (With Confirmation)", type="secondary"):
+            st.session_state.show_clear_confirmation = True
+        
+        if st.session_state.show_clear_confirmation:
             st.warning("⚠️ **Danger Zone**")
             st.write("This will permanently delete ALL analysis results and artifacts.")
             st.write("This action cannot be undone!")
@@ -118,6 +139,7 @@ def main():
             col1, col2 = st.columns(2)
             with col1:
                 if st.button("❌ Cancel", key="cancel_clear"):
+                    st.session_state.show_clear_confirmation = False
                     st.rerun()
             
             with col2:
@@ -128,14 +150,15 @@ def main():
                         if result:
                             st.success("✅ Database cleared successfully!")
                             st.write(f"Deleted {result.get('deleted_records', 0)} records and {result.get('deleted_files', 0)} files")
-                            st.balloons()
+                            # Reset confirmation state
+                            st.session_state.show_clear_confirmation = False
                             # Add a delay and then refresh
-                            import time
-                            time.sleep(1)
-                            st.experimental_rerun()
+                            time.sleep(2)
+                            st.rerun()
                         else:
                             st.error("❌ Failed to clear database")
                             st.write("Please check the backend logs for more details.")
+                            st.session_state.show_clear_confirmation = False
         
         st.divider()
         

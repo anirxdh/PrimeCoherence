@@ -1,0 +1,13 @@
+flask==3.0.3
+flask-cors==4.0.0
+werkzeug==3.0.3
+reportlab==4.2.2
+matplotlib==3.9.0
+numpy>=1.26.0,<2
+pytest==8.2.0
+
+# Optional quantum SDKs (commented out for minimal installation)
+# qiskit==1.2.4
+# cirq==1.3.0
+# amazon-braket-sdk==1.81.0
+# pyquil==4.6.1

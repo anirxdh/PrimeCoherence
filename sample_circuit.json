@@ -1,0 +1,9 @@
+{
+  "num_qubits": 3,
+  "gates": [
+    {"name": "h", "qubits": [0], "params": []},
+    {"name": "cx", "qubits": [0, 1], "params": []},
+    {"name": "rz", "qubits": [2], "params": [1.5708]},
+    {"name": "cx", "qubits": [1, 2], "params": []}
+  ]
+}

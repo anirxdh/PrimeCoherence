@@ -12,3 +12,15 @@ services:
         value: production
       - key: DATABASE_URL
         value: sqlite:///prime_coherence.db
+
+  - type: web
+    name: prime-coherence-frontend
+    env: python
+    plan: free
+    buildCommand: cd frontend && pip install -r requirements.txt
+    startCommand: cd frontend && streamlit run dashboard.py --server.port $PORT --server.address 0.0.0.0
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: API_BASE_URL
+        value: https://prime-coherence-api.onrender.com

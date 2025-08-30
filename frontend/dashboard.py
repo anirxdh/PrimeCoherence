@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import io
 import base64
 import time
+import os
 from datetime import datetime
 
 # Page configuration
@@ -17,7 +18,8 @@ st.set_page_config(
 
 # Initialize session state
 if 'api_base_url' not in st.session_state:
-    st.session_state.api_base_url = "http://localhost:8000"
+    # Use environment variable if available, otherwise default to localhost
+    st.session_state.api_base_url = os.environ.get('API_BASE_URL', "http://localhost:8000")
 
 def make_api_request(endpoint, method="GET", data=None, files=None):
     """Make API request with error handling."""

@@ -5,6 +5,7 @@ reportlab==4.2.2
 matplotlib==3.9.0
 numpy>=1.26.0,<2
 pytest==8.2.0
+gunicorn==21.2.0
 
 # Optional quantum SDKs (commented out for minimal installation)
 # qiskit==1.2.4
